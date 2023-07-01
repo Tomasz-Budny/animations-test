@@ -1,0 +1,42 @@
+nav {
+  position: fixed;
+  width: 100%;
+  background-color: #454545;
+  color: #fff;
+}
+
+.flex-wrap {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  flex-wrap: wrap;
+  align-items: start;
+}
+
+.items-container {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-items {
+  display: flex;
+  gap: 10px;
+}
+
+.collapse-menu {
+  width: 100%;
+}
+
+.collapsed {
+  height: 100vh;
+
+  .brand {
+    opacity: 0;
+  }
+}
+
+.collapse-nav-item {
+  padding: 10px;
+  padding-left: 30px;
+  font-size: 25px;
+}

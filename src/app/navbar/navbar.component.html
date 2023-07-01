@@ -1,0 +1,32 @@
+<nav 
+  #nav
+  [@navItemsDropdown]="(collapsed$ | async) ? 'expand': 'collapse'"
+  (@navItemsDropdown.done)="onCollapseToggle($event)">
+  <div class="flex-wrap">
+    <div class="brand">
+      LOGO
+    </div>
+    <div class="items-container">
+      <ng-container *ngIf="!(hamburgerVisible$ | async)">
+        <span class="nav-items" *ngIf="navs.length > 0">
+          <span class="nav-item" *ngFor="let nav of navs">
+            {{ nav }}
+          </span>
+        </span>
+      </ng-container>
+      <span 
+        class="hamburger" 
+        *ngIf="hamburgerVisible$ | async"
+        (click)="collapseClicked$.next(!isCollapsed); isCollapsed = !isCollapsed">
+        X
+      </span>
+    </div>
+    <div
+      *ngIf="collapsed$ | async as visible"
+      class="collapse-menu">
+      <div class="collapse-nav-item" *ngFor="let nav of navs">
+        {{ nav }}
+      </div>
+    </div>
+  </div>
+</nav>
