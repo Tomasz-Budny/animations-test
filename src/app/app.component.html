@@ -1,14 +1,19 @@
 <navbar></navbar>
 <div class="content" NavbarMargin>
   Siema to jest właśnie tom hehe :D
+  <br>
+  <a href="https://tailwindcomponents.com/cheatsheet/">Odnośniki do  tailwinda</a>
 
+  <br>
   <button (click)="isBoxVisible = !isBoxVisible">
     Pokaż
   </button>
+  <br>
+
 
   <div 
     *ngIf="isBoxVisible"
-    class="anime-box">
+    class="anime-box h-screen">
     <span>To jest tekst</span>
     <div class="list">
       <div class="list-item">Tom</div>
