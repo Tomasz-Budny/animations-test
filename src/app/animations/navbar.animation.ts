@@ -1,6 +1,8 @@
-import { animate, group, query, sequence, state, style, transition, trigger } from "@angular/animations";
+import { animate, animateChild, group, query, sequence, state, style, transition, trigger } from "@angular/animations";
 
 const speed = "300ms";
+
+// Nie można dodawać query do state - co jest bardzo ograniczające - jakby nie to nie trzeba byłoby przepisywać defacto tych samych styli do pliku.
 
 export const NavItemsDropdownAnimation = 
   trigger('navItemsDropdown', [
@@ -8,14 +10,19 @@ export const NavItemsDropdownAnimation =
       style("*")
     ),
     state('expand', 
-      style("*"),
+      style({
+        height: "100vh",
+      }),
     ),
     transition('collapse => expand', [
+      style({
+        height: '50px'
+      }),
       query(".collapse-nav-item", [
         style({ 
           opacity: 0,
           transform: "translateY(-50px)",
-          overflow: "hidden"
+          overflow: "hidden",
         })
       ]),
       group([
@@ -32,20 +39,14 @@ export const NavItemsDropdownAnimation =
             }))
           ]),
         ]),
-        query(".brand", 
-        animate(`${speed} ease`, 
-        style({ opacity: 0})
-      )),
+        query('@navBrandHide', animateChild()),
       ])
     ]),
     transition('expand => collapse', [
       style({ height: '100vh' }),
       query(".brand", style({ opacity: 0})),
       group([
-        query(".brand", 
-          animate(`${speed} ease`, 
-          style({ opacity: 1})
-        )),
+        query('@navBrandHide', animateChild()),
         query(".collapse-nav-item", [
           animate(`${speed} ease`, 
           style({ opacity: 0 }))
@@ -56,4 +57,19 @@ export const NavItemsDropdownAnimation =
         })),
       ])
     ]),
+])
+
+export const NavBrand = trigger('navBrandHide', [
+  state('expand', 
+    style({opacity: 1})
+  ),
+  state('expand', 
+  style({opacity: 0})
+),
+  transition("collapse => expand", [
+    animate(`${speed} ease`)
+  ]),
+  transition("expand => collapse", [
+    animate(`${speed} ease`)
+  ]),
 ])

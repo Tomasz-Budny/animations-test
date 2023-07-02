@@ -1,18 +1,16 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { AppBreakpoints } from '../app-breakpoints.class';
-import { Unsub } from '../unsub.class';
-import { Observable, map, of, takeUntil, tap } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs';
-import { NavItemsDropdownAnimation } from '../animations/navbar.animation';
-import { AnimationEvent } from "@angular/animations";
+import { NavBrand, NavItemsDropdownAnimation } from '../animations/navbar.animation';
 
 @Component({
   selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  animations: [NavItemsDropdownAnimation]
+  animations: [NavItemsDropdownAnimation, NavBrand]
 })
 export class NavbarComponent {
 
@@ -25,10 +23,10 @@ export class NavbarComponent {
     "Vision"
   ]
   
-  @ViewChild('nav') nav: ElementRef<HTMLDivElement>;
   hamburgerVisible$: Observable<boolean>;
   collapsed$: Observable<boolean>;
   collapseClicked$ = new Subject<boolean>();
+  collapseState$: Observable<string>;
   isCollapsed: Boolean = false;
 
   constructor(
@@ -39,27 +37,14 @@ export class NavbarComponent {
     this.hamburgerVisible$ = this.responsive
       .observe([AppBreakpoints.Small])
       .pipe(
-        map(result => result.matches),
-        tap(res => {
-          if(!res) {
-            this.isCollapsed = false;
-            this.nav.nativeElement.classList.remove('collapsed');
-          }
-        })
+        map(result => result.matches)
     );
-
     this.collapsed$ = this.hamburgerVisible$
       .pipe(
-        switchMap(matches => matches ?  this.collapseClicked$ : of(false)),   
+        switchMap(matches => matches ?  this.collapseClicked$ : of(false)), 
     )
-  }
-
-  onCollapseToggle(event: AnimationEvent) {
-    if(this.isCollapsed) {
-      this.nav.nativeElement.classList.add('collapsed');
-    }
-    else {
-      this.nav.nativeElement.classList.remove('collapsed');
-    }
+    this.collapseState$ = this.collapsed$.pipe(
+      map(expanded => expanded ? 'expand' : "collapse")
+    )
   }
 }

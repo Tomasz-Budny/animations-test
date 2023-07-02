@@ -1,1 +1,19 @@
 <navbar></navbar>
+<div class="content" NavbarMargin>
+  Siema to jest właśnie tom hehe :D
+
+  <button (click)="isBoxVisible = !isBoxVisible">
+    Pokaż
+  </button>
+
+  <div 
+    *ngIf="isBoxVisible"
+    class="anime-box">
+    <span>To jest tekst</span>
+    <div class="list">
+      <div class="list-item">Tom</div>
+      <div class="list-item">Adiro</div>
+      <div class="list-item">Bart</div>
+    </div>
+  </div>
+</div>

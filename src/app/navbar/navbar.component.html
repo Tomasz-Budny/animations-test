@@ -1,9 +1,7 @@
 <nav 
-  #nav
-  [@navItemsDropdown]="(collapsed$ | async) ? 'expand': 'collapse'"
-  (@navItemsDropdown.done)="onCollapseToggle($event)">
+  [@navItemsDropdown]="collapseState$ | async">
   <div class="flex-wrap">
-    <div class="brand">
+    <div class="brand" [@navBrandHide]="collapseState$ | async">
       LOGO
     </div>
     <div class="items-container">
