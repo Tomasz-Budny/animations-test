@@ -20,7 +20,7 @@
       </span>
     </div>
     <div
-      *ngIf="collapsed$ | async as visible"
+      *ngIf="collapsed$ | async"
       class="collapse-menu">
       <div class="collapse-nav-item" *ngFor="let nav of navs">
         {{ nav }}
