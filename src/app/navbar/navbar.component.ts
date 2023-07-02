@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { AppBreakpoints } from '../app-breakpoints.class';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, fromEvent, map, of, tap } from 'rxjs';
 import { Subject } from 'rxjs';
 import { switchMap } from 'rxjs';
 import { NavBrand, NavItemsDropdownAnimation } from '../animations/navbar.animation';
@@ -37,12 +37,16 @@ export class NavbarComponent {
     this.hamburgerVisible$ = this.responsive
       .observe([AppBreakpoints.Small])
       .pipe(
-        map(result => result.matches)
+        map(result => result.matches),
+        tap(res => {
+          if(!res) this.isCollapsed = false;
+        })
     );
     this.collapsed$ = this.hamburgerVisible$
       .pipe(
         switchMap(matches => matches ?  this.collapseClicked$ : of(false)), 
     )
+
     this.collapseState$ = this.collapsed$.pipe(
       map(expanded => expanded ? 'expand' : "collapse")
     )
